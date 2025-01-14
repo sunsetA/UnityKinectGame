@@ -212,7 +212,7 @@ public class HandGestureDetection : MonoBehaviour
             Rect rectCanvas = LeftCursor.canvas.pixelRect;
             float xoffset = (rectCanvas.width) / 2;
             float yoffset = rectCanvas.height / 2;
-            float multiple = 1.26f;
+            float multiple = 2f;
             Vector3 posSprite = new Vector2(Mathf.Clamp(multiple * (leftHandScreenPos.x * rectCanvas.width - xoffset) ,- xoffset,xoffset) , Mathf.Clamp(multiple*(leftHandScreenPos.y * rectCanvas.height - yoffset),-yoffset,yoffset) );
 
             Vector3 posSprite1 = new Vector2(Mathf.Clamp(multiple * (rightHandScreenPos.x * rectCanvas.width - xoffset), -xoffset, xoffset),Mathf.Clamp(multiple*(rightHandScreenPos.y * rectCanvas.height - yoffset),-yoffset,yoffset) );
