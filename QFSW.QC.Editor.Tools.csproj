@@ -279,6 +279,21 @@
     <Reference Include="Kinect2UnityWrapper">
       <HintPath>Assets\K2Examples\Plugins\Kinect2UnityWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Data">
+      <HintPath>Assets\Plugins\Mono.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>Assets\Plugins\Mono.Data.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Data.SqliteClient">
+      <HintPath>Assets\Plugins\Mono.Data.SqliteClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <HintPath>Assets\Plugins\System.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <HintPath>Assets\Plugins\System.EnterpriseServices.dll</HintPath>
+    </Reference>
     <Reference Include="DOTween">
       <HintPath>Assets\Plugins\DOTween\DOTween.dll</HintPath>
     </Reference>
@@ -287,6 +302,9 @@
     </Reference>
     <Reference Include="mcs">
       <HintPath>Assets\Plugins\QFSW\Quantum Console\Source\Extras\exec\CSharpCompiler\Plugins\mcs.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@3.0.2\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>

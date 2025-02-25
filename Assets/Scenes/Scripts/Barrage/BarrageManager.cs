@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static SqliteMGR;
 
 public class BarrageManager : MonoBehaviour
 {
@@ -101,6 +102,8 @@ public class BarrageManager : MonoBehaviour
     public int cache = -1;
 
     public float Speed = 1f;
+
+    public SqliteMGR.UserData userData = new UserData();
     private void Awake()
     {
         PositiveBarrageList = PositiveBarrage.Split('、').ToList();
@@ -108,6 +111,7 @@ public class BarrageManager : MonoBehaviour
         left_hand.OnDragGetScoreCallback += ClickObject;
         right_hand.OnDragGetScoreCallback += ClickObject;
         GameManager.Instance.GamePauseEvent += PauseGame;
+        userData.userInfo = GetUserInfoFromJson();
     }
     
     private void Start()
@@ -216,6 +220,14 @@ public class BarrageManager : MonoBehaviour
             scoreState = "你的开心吸引着美好的一切(*^▽^*)";
         }
         FinalPage.transform.GetChild(0).Find("CongratulationText").GetComponent<Text>().text = scoreState;
+        userData.UserGameData.GameName = "我的情绪我做主";
+        userData.UserGameData.GameCateloge = "身心活动训练";
+        userData.UserGameData.GameScore = (Mathf.FloorToInt(percent * 100));
+        userData.UserGameData.GameResult = percent > 0.6f ? "成功" : "失败";
+        userData.UserGameData.GameEndTime = GetCurrentTime();
+        userData.UserGameData.GameDuration = (int)((System.DateTime.Parse(userData.UserGameData.GameEndTime))- (System.DateTime.Parse(userData.UserGameData.GameStartTime))).TotalSeconds;
+        KinectGameDBHelper kinectGameDBHelper = new KinectGameDBHelper();
+        kinectGameDBHelper.InsertUserData(userData);
     }
     //public void SetProcesserImage(float value,float tweenDuration)
     //{
@@ -282,6 +294,8 @@ public class BarrageManager : MonoBehaviour
         if (!isPause)
         {
             ResetData();
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////
+            userData.UserGameData.GameStartTime = GetCurrentTime();
         }
         else
         {

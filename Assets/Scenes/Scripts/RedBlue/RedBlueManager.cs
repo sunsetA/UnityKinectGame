@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
+using static SqliteMGR;
 using Random = UnityEngine.Random;
 
 [Serializable]
@@ -79,9 +80,13 @@ public class RedBlueManager : MonoBehaviour
     List<InteractableObject> interactableObjects1;
 
     public Transform ComparedBorderHeight;
+
+    public SqliteMGR.UserData userData = new UserData();
     private void Start()
     {
 
+        //TODO:get data from json 
+        userData.userInfo=GetUserInfoFromJson();
         //GameManager.Instance.clapListener.HandStateChangeEvent += OnDragStateEvent;
         GameManager.Instance.GamePauseEvent += this.GamePauseEvent;
         StartSpawnItems();
@@ -110,6 +115,19 @@ public class RedBlueManager : MonoBehaviour
                 //正确率
                 TrainingReport.transform.Find("Score/CoreectPercentValue/Text").GetComponent<Text>().text = (100 * (float)SucceededScore / (float)SpawnItemCount).ToString("F2") + "%";
                 Tips.GetComponentInChildren<Text>().text = "举起左手重新开始游戏";
+
+
+                int score = Mathf.FloorToInt((SucceededScore * 1f / SpawnItemCount) * 100);
+                userData.UserGameData.GameName = "花落谁家";
+                userData.UserGameData.GameCateloge = "身心协调训练";
+                userData.UserGameData.GameScore = score;
+                userData.UserGameData.GameResult = score>60? "成功":"失败";
+                userData.UserGameData.GameDuration = TimeDuration;
+                userData.UserGameData.GameEndTime = GetCurrentTime();
+
+                KinectGameDBHelper kinectGameDBHelper = new KinectGameDBHelper();
+                kinectGameDBHelper.InsertUserData(userData);
+
             }
             else
             {
@@ -121,6 +139,7 @@ public class RedBlueManager : MonoBehaviour
                     {
                         isSpawn = true;
                     }));
+                    userData.UserGameData.GameStartTime = GetCurrentTime();
                 }
 
 
@@ -277,4 +296,7 @@ public class RedBlueManager : MonoBehaviour
     {
         GameManager.Instance.QuitGame();
     }
+
+
+
 }

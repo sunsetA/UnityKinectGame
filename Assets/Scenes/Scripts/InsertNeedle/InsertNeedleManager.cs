@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static SqliteMGR;
 
 public class InsertNeedleManager : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class InsertNeedleManager : MonoBehaviour
     WaitForSeconds wait = new WaitForSeconds(1f);
 
     private bool isReadIntroduce = false;
+
+    public SqliteMGR.UserData userData = new UserData();
     private void Start()
     {
         if (mainCircle == null)
@@ -53,6 +56,9 @@ public class InsertNeedleManager : MonoBehaviour
         GameManager.Instance.clapListener.ClapCallback += SpawnItem;
         GameManager.Instance.GamePauseEvent += SetSpawnState;
         StartCoroutine(GameCalculate());
+        userData.userInfo=GetUserInfoFromJson();
+        KinectGameDBHelper kinectGameDBHelper = new KinectGameDBHelper();
+        kinectGameDBHelper.InsertUserData(userData);
     }
 
     private void Update()
@@ -154,7 +160,14 @@ public class InsertNeedleManager : MonoBehaviour
                 CircleBG.GetComponent<Image>().color = new Color(0.9843138f, 0.9450981f, 0.9019608f, 0);
                 Tips.SetActive(true);
             });
-
+            userData.UserGameData.GameEndTime = GetCurrentTime();
+            userData.UserGameData.GameName = "手眼协调";
+            userData.UserGameData.GameCateloge = "身心协调训练";
+            userData.UserGameData.GameScore = score;
+            userData.UserGameData.GameResult = score > 10 ? "成功" : "失败";
+            userData.UserGameData.GameDuration = durationTime;
+            KinectGameDBHelper kinectGameDBHelper = new KinectGameDBHelper();
+            kinectGameDBHelper.InsertUserData(userData);
         }
         else
         {
@@ -162,6 +175,8 @@ public class InsertNeedleManager : MonoBehaviour
             TrainingReport.SetActive(isEnd);
             Tips.SetActive(false);
             Tips.GetComponentInChildren<Text>().text = "举起左手重新开始游戏";
+            userData.UserGameData.GameStartTime = GetCurrentTime();
+
         }
     }
 
